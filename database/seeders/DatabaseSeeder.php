@@ -5,6 +5,8 @@ namespace Database\Seeders;
 use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\Category;
+use App\Models\SubCategory;
 
 class DatabaseSeeder extends Seeder
 {
@@ -21,5 +23,11 @@ class DatabaseSeeder extends Seeder
             'name' => 'Test User',
             'email' => 'test@example.com',
         ]);
+
+        Category::factory(5)->create()->each(function ($category) {
+            SubCategory::factory(3)->create([
+                'category_id' => $category->id
+            ]);
+        });
     }
 }

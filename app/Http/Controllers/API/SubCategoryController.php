@@ -41,8 +41,13 @@ class SubCategoryController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, SubCategory $subcategory)
+    public function update(Request $request, string $id)
     {
+        $subcategory = SubCategory::findOrFail($id);
+         $request->validate([
+            'name' => 'sometimes|required',
+            'category_id' => 'sometimes|required|exists:categories,id'
+        ]);
         $subcategory->update($request->all());
         return $subcategory;
     }
@@ -50,9 +55,11 @@ class SubCategoryController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id, SubCategory $subcategory)
+    public function destroy(string $id)
     {
+        $subcategory = SubCategory::findOrFail($id);
         $subcategory->delete();
+
         return response()->json(['message' => 'Deleted']);
     }
 }
